@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diário de Obra Digital</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-100 min-h-screen pb-12 font-sans">
+
+  <!-- Header -->
+  <header class="bg-slate-900 text-white py-4 px-6 shadow-lg sticky top-0 z-50">
+    <div class="max-w-2xl mx-auto flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <i class="fa-solid fa-helmet-safety text-amber-500 text-2xl"></i>
+        <div>
+          <h1 class="text-lg font-bold leading-tight">Diário de Obra</h1>
+          <p class="text-xs text-slate-400">Registro Diário de Campo</p>
+        </div>
+      </div>
+      <span class="bg-amber-500/20 text-amber-400 text-xs px-2.5 py-1 rounded-full font-medium border border-amber-500/30">
+        Gestão
+      </span>
+    </div>
+  </header>
+
+  <!-- Container Principal -->
+  <main class="max-w-2xl mx-auto px-4 mt-6">
+    <form id="diarioForm" class="space-y-6">
+
+      <!-- Informações Gerais -->
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+        <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-circle-info text-blue-600"></i> Informações Básicas
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-600 mb-1">Obra / Empreendimento</label>
+            <input type="text" id="obra" required placeholder="Ex: Residencial Parque das Flores"
+              class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-600 mb-1">Responsável / Estagiário</label>
+            <input type="text" id="responsavel" required placeholder="Seu Nome"
+              class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-medium text-slate-600 mb-1">Data do Registro</label>
+            <input type="date" id="date" required
+              class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+        </div>
+      </div>
+
+      <!-- Condições Climáticas -->
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+        <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-cloud-sun text-amber-500"></i> Condições Climáticas
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-600 mb-1">Período da Manhã</label>
+            <select id="climaManha" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+              <option value="Ensolarado / Praticável">☀️ Ensolarado / Praticável</option>
+              <option value="Nublado / Praticável">⛅ Nublado / Praticável</option>
+              <option value="Chuva Leve / Parcial">🌦️ Chuva Leve / Parcial</option>
+              <option value="Chuva Forte / Impraticável">🌧️ Chuva Forte / Impraticável</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-600 mb-1">Período da Tarde</label>
+            <select id="climaTarde" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+              <option value="Ensolarado / Praticável">☀️ Ensolarado / Praticável</option>
+              <option value="Nublado / Praticável">⛅ Nublado / Praticável</option>
+              <option value="Chuva Leve / Parcial">🌦️ Chuva Leve / Parcial</option>
+              <option value="Chuva Forte / Impraticável">🌧️ Chuva Forte / Impraticável</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Efetivo em Campo -->
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-users text-emerald-600"></i> Efetivo em Campo
+          </h2>
+          <button type="button" onclick="addEfetivoRow()" class="text-xs bg-emerald-50 text-emerald-600 hover:bg-emerald-100 font-medium px-2.5 py-1 rounded-lg transition-colors border border-emerald-200">
+            + Adicionar Função
+          </button>
+        </div>
+        <div id="efetivoContainer" class="space-y-3">
+          <!-- Linhas de efetivo geradas dinamicamente -->
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between items-center text-xs font-semibold text-slate-700">
+          <span>Efetivo Total do Dia:</span>
+          <span id="efetivoTotalDisplay" class="bg-slate-100 px-3 py-1 rounded-full border border-slate-200">0 Pessoas</span>
+        </div>
+      </div>
+
+      <!-- Serviços Executados -->
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+        <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-indigo-600"></i> Serviços Executados no Dia
+        </h2>
+        <p class="text-xs text-slate-500 mb-3">Detalhe o pavimento, setor e o tipo de trabalho realizado.</p>
+        <textarea id="servicos" rows="4" required placeholder="Ex: 2º Pavimento - Concretagem de 3 pilares. Térreo - Montagem de fôrmas e passagem de conduítes."
+          class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+      </div>
+
+      <!-- Insumos e Recebimento -->
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+        <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-truck-ramp-box text-purple-600"></i> Recebimento de Materiais / Insumos
+        </h2>
+        <textarea id="materiais" rows="3" placeholder="Ex: Recebimento de 15m³ de concreto FCK 30MPa (NF 1234, Slump 12cm). Chegada de 200 sacos de cimento."
+          class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+      </div>
+
+      <!-- Ocorrências e Visitas -->
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+        <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-triangle-exclamation text-rose-500"></i> Ocorrências, Paralisações e Visitas
+        </h2>
+        <textarea id="ocorrencias" rows="3" placeholder="Ex: Visita técnica do projetista estrutural. Paralisação de 1h da equipe de pintura por falta de energia."
+          class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+      </div>
+
+      <!-- Fotos e Mídia -->
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+        <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-camera text-teal-600"></i> Registro Fotográfico
+        </h2>
+        <p class="text-xs text-slate-500 mb-3">Tire fotos diretamente do canteiro para anexar ao relatório do Drive.</p>
+        <input type="file" id="photos" accept="image/*" multiple capture="environment"
+          class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100 cursor-pointer">
+      </div>
+
+      <!-- Botão Enviar -->
+      <button type="submit" id="submitBtn"
+        class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg transition-all flex justify-center items-center gap-2 text-sm">
+        <i class="fa-solid fa-paper-plane"></i> Enviar e Salvar no Google Drive
+      </button>
+
+    </form>
+  </main>
+
+  <script>
+    // Cole aqui a URL gerada na implantação do seu Google Apps Script
+    const APPS_SCRIPT_URL = "SUA_URL_DO_APPS_SCRIPT_AQUI";
+
+    // Define data atual padrão
+    document.getElementById('date').valueAsDate = new Date();
+
+    // Funções padrão de Efetivo
+    const funcoesPadrao = ["Mestre / Encarregado", "Pedreiros", "Ajudantes", "Eletricistas/Encanadores", "Gesseiros/Drywall"];
+
+    function addEfetivoRow(funcao = '', qtd = 0) {
+      const container = document.getElementById('efetivoContainer');
+      const rowId = Date.now() + Math.random();
+      const div = document.createElement('div');
+      div.className = "flex gap-2 items-center row-efetivo";
+      div.id = `row-${rowId}`;
+      div.innerHTML = `
+        <input type="text" placeholder="Função / Empresa" value="${funcao}" class="efetivo-funcao flex-1 px-3 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none">
+        <input type="number" min="0" value="${qtd}" onchange="updateTotalEfetivo()" class="efetivo-qtd w-20 px-3 py-1.5 text-xs border border-slate-300 rounded-lg text-center focus:outline-none">
+        <button type="button" onclick="removeRow('row-${rowId}')" class="text-slate-400 hover:text-rose-500 px-2 py-1">
+          <i class="fa-solid fa-trash-can text-xs"></i>
+        </button>
+      `;
+      container.appendChild(div);
+      updateTotalEfetivo();
+    }
+
+    function removeRow(id) {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+      updateTotalEfetivo();
+    }
+
+    function updateTotalEfetivo() {
+      const qtds = document.querySelectorAll('.efetivo-qtd');
+      let total = 0;
+      qtds.forEach(input => {
+        total += parseInt(input.value) || 0;
+      });
+      document.getElementById('efetivoTotalDisplay').innerText = `${total} Pessoas`;
+      return total;
+    }
+
+    // Inicializa campos padrão de efetivo
+    funcoesPadrao.forEach(f => addEfetivoRow(f, 0));
+
+    // Converte imagens para Base64
+    async function convertFilesToBase64(files) {
+      const promises = Array.from(files).map(file => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve({ base64: reader.result, type: file.type });
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      });
+      return Promise.all(promises);
+    }
+
+    // Envio do formulário
+    document.getElementById('diarioForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (APPS_SCRIPT_URL === "https://script.google.com/macros/s/AKfycbwGB_1r5uhqLBf6p-KzwSnfZI9SURTwO5RrP1ShXiRzCf7wn7O4buhmFmcBRpK9uUyB/exec") {
+        alert("Atenção: Você precisa substituir a variável APPS_SCRIPT_URL com o link da sua implantação do Google Apps Script!");
+        return;
+      }
+
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Enviando para o Drive...`;
+
+      try {
+        // Coleta efetivo
+        const efetivo = [];
+        document.querySelectorAll('.row-efetivo').forEach(row => {
+          const func = row.querySelector('.efetivo-funcao').value;
+          const qtd = parseInt(row.querySelector('.efetivo-qtd').value) || 0;
+          if (func && qtd > 0) {
+            efetivo.push({ funcao: func, qtd: qtd });
+          }
+        });
+
+        // Coleta Fotos
+        const fileInput = document.getElementById('photos');
+        let photosData = [];
+        if (fileInput.files.length > 0) {
+          photosData = await convertFilesToBase64(fileInput.files);
+        }
+
+        const payload = {
+          obra: document.getElementById('obra').value,
+          responsavel: document.getElementById('responsavel').value,
+          date: document.getElementById('date').value,
+          climaManha: document.getElementById('climaManha').value,
+          climaTarde: document.getElementById('climaTarde').value,
+          efetivoTotal: updateTotalEfetivo(),
+          efetivo: efetivo,
+          servicos: document.getElementById('servicos').value,
+          materiais: document.getElementById('materiais').value,
+          ocorrencias: document.getElementById('ocorrencias').value,
+          photos: photosData
+        };
+
+        const res = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+
+        if (result.status === 'success') {
+          alert('Diário de Obra enviado e salvo no Google Drive com sucesso!');
+          document.getElementById('diarioForm').reset();
+          document.getElementById('date').valueAsDate = new Date();
+        } else {
+          alert('Erro ao salvar: ' + result.message);
+        }
+
+      } catch (err) {
+        alert('Erro ao enviar dados. Verifique a conexão ou a URL do Script. Detalhes: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Enviar e Salvar no Google Drive`;
+      }
+    });
+  </script>
+</body>
+</html>
